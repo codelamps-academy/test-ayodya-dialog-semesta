@@ -9,20 +9,18 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model dummy {
-  id   String @id @default(cuid())
-  name String
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  username    String   @unique
+  phoneNumber String
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  reffs reff[]
-}
-
-model reff {
-  id      String  @id @default(cuid())
-  name    String
-  dummy   dummy?  @relation(fields: [dummyId], references: [id])
-  dummyId String?
+  @@map("users")
 }
