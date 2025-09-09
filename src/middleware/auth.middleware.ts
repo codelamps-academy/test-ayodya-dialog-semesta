@@ -6,6 +6,7 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
+  // HARUS ADA TOKEN SETIAP REQUEST
   if (!token) {
     const response: ApiResponse = {
       success: false,
@@ -14,6 +15,7 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
     return res.status(401).json(response);
   }
 
+  // JIKA TOKEN INVALID ATAU EXPIRED
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; username: string };
     req.user = decoded;
